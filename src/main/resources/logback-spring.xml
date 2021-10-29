@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+
+    <appender name="SERVER_LOG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+
+    <appender name="STACK_LOG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc/>
+                <timestamp>
+                    <timeZone>Europe/Stockholm</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "applevel":"%level",
+                        "thread_name": "%thread",
+                        "logtype":"transaction",
+                        "message": "#tryJson{%message}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+
+        </encoder>
+    </appender>
+
+    <logger name="se.atg.lib.stacklog.StackLogger" additivity="false" level="info">
+        <appender-ref ref="STACK_LOG"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="SERVER_LOG"/>
+    </root>
+
+</configuration>

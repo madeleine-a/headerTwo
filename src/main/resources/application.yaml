@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: Header-Two
+  activemq:
+    broker-url: tcp://localhost:61616
+  sleuth:
+    baggage:
+      remote-fields: businessId
+      correlation-fields: businessId
+    messaging:
+      enabled: true
+
+server:
+  port: 8082
